@@ -1,0 +1,56 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/dandillion"
+    tools:context=".SearchActivity">
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Search"
+        android:id="@+id/btnSearch"
+        android:layout_margin="5dp"
+        android:background="#ffb03349"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        android:alpha=".75"
+        android:onClick="onImageSearch"
+        android:layout_alignParentTop="true"
+        android:layout_alignEnd="@+id/gvResults" />
+
+    <GridView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:id="@+id/gvResults"
+        android:layout_alignParentStart="true"
+        android:numColumns="3"
+        android:layout_below="@+id/btnSearch" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="188dp"
+        android:layout_marginBottom="196dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/etQuery"
+        android:textColor="#FFFFFF"
+        android:hint="Enter your search term"
+        android:layout_alignTop="@+id/btnSearch"
+        android:layout_toEndOf="@+id/imageView2" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/imageView2"
+        android:layout_alignTop="@+id/etQuery"
+        android:layout_alignStart="@+id/gvResults"
+        android:src="@drawable/image_icon" />
+
+</RelativeLayout>
