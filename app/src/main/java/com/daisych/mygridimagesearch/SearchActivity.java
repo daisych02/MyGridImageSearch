@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 
 public class SearchActivity extends ActionBarActivity {
 
+    AsyncHttpClient client = new AsyncHttpClient();
     ArrayList<ImageResult> imageResults;
     ImageResultsAdapter adapter;
     EditText etQuery;
@@ -33,6 +35,7 @@ public class SearchActivity extends ActionBarActivity {
     String imageColor = "";
     String imageType = "";
     String imageSite = "";
+    static int page = 0;
     final int REQUEST_CODE = 200;
 
     @Override
@@ -53,6 +56,16 @@ public class SearchActivity extends ActionBarActivity {
                 ImageResult result = imageResults.get(position);
                 i.putExtra("result", result);
                 startActivity(i);
+            }
+        });
+
+        gvResults.setOnScrollListener(new EndlessScrollListener() {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount) {
+                // Triggered only when new data needs to be appended to the list
+                // Add whatever code is needed to append new items to your AdapterView
+                customLoadMoreDataFromApi(SearchActivity.page);
+                // or customLoadMoreDataFromApi(totalItemsCount);
             }
         });
     }
@@ -91,7 +104,6 @@ public class SearchActivity extends ActionBarActivity {
     }
 
     public void onImageSearch(View v) {
-        AsyncHttpClient client = new AsyncHttpClient();
         String query = etQuery.getText().toString();
         String searchUrl = generateQueryString(query);
         Log.e("DEBUG", searchUrl);
@@ -131,6 +143,33 @@ public class SearchActivity extends ActionBarActivity {
         }
 
         return url;
+    }
+
+    // Append more data into the adapter
+    public void customLoadMoreDataFromApi(int page) {
+        // This method probably sends out a network request and appends new data items to your adapter.
+        // Use the offset value and add it as a parameter to your API request to retrieve paginated data.
+        // Deserialize API response and then construct new objects to append to the adapter
+        SearchActivity.page++;
+        String query = etQuery.getText().toString();
+        int offset = page * 8;
+        String url = generateQueryString(query) + "&start=" + offset;
+
+        client.get(url, new JsonHttpResponseHandler() {
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                JSONArray JSONImageResults;
+
+                try {
+                    JSONImageResults = response.getJSONObject("responseData").getJSONArray("results");
+                    // when you make change in adapter, it does change underlying data structure and notify
+                    adapter.addAll(ImageResult.fromJSONArray(JSONImageResults));
+                }   catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
     }
 
     @Override
