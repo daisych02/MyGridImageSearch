@@ -20,4 +20,6 @@ REQUIRED: User can scroll down “infinitely” to continue loading more image r
 
 EXTRA: Improve the user interface and experiment with image assets and/or styling and coloring
 
+![alt tag](https://raw.githubusercontent.com/daisych02/MyGridImageSearch/master/GridImageSearch.gif)
+
 
